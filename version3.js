@@ -8,12 +8,14 @@
 
 // It should have a deleteTodo method.
 
+
+
 var todoList = {
     todos: ['item 1', 'item 2', 'item 3'],
     displayTodos: function () {
-        console.log('My Todos: ', this.todos);
+        console.log('My todos: ', this.todos);
     },
-    addTodo: function (todo) {
+    addTodos: function (todo) {
         this.todos.push(todo);
         this.displayTodos();
     },
@@ -25,11 +27,10 @@ var todoList = {
         this.todos.splice(position, 1);
         this.displayTodos();
     }
+
 };
 
-todoList.addTodo('item 4');
-todoList.changeTodo(3, 'new item 4');
+todoList.displayTodos();
+todoList.addTodos('new item');
+todoList.changeTodo(3, 'changed item');
 todoList.deleteTodo(3);
-
-
-
