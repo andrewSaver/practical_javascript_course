@@ -1,6 +1,8 @@
-// There should be a "Display Todos" button and a "Toggle All" button in the app.
-// Clicking "Display Todos" should run todoList.displayTodos.
-// Clicking "Toggle All" should run todoList.toggleAll.
+// It should have working controls for .addTodo
+// It should have working controls for .changeTodo
+// It should have working controls for .deleteTodo
+// It should have working controls for .toggleCompleted
+
 
 var todoList = {
     todos: [],
@@ -50,7 +52,7 @@ var todoList = {
             }
         }
 
-        // Case 1: if everything's true, make everything true.
+        // Case 1: if everything's true, make everything false.
         if (completedTodos === totalTodos) {
             for (var i = 0; i < totalTodos; i++) {
                 this.todos[i].completed = false;
@@ -65,15 +67,33 @@ var todoList = {
     }
 };
 
-
-var displayTodosButton = document.getElementById('displayTodosButton');
-
-displayTodosButton.addEventListener('click', function () {
-    todoList.displayTodos(); 
-});
-
-var toggleAllButton = document.getElementById('toggleAllButton');
-
-toggleAllButton.addEventListener('click', function () {
-    todoList.toggleAll(); 
-});
+var handlers = {
+    displayTodos: function () {
+        todoList.displayTodos();
+    },
+    toggleAll: function () {
+        todoList.toggleAll();
+    },
+    addTodo: function () {
+        var addTodoTextInput = document.getElementById('addTodoTextInput');
+        todoList.addTodo(addTodoTextInput.value);
+        addTodoTextInput.value = '';
+    },
+    changeTodo: function () {
+        var changeTodoPositionInput = document.getElementById('changeTodoPositionInput');
+        var changeTodoTextInput = document.getElementById('changeTodoTextInput');
+        todoList.changeTodo(changeTodoPositionInput.valueAsNumber, changeTodoTextInput.value);
+        changeTodoPositionInput.value = '';
+        changeTodoTextInput.value = '';
+    },
+    deleteTodo: function () {
+        var deleteTodoPositionInput = document.getElementById('deleteTodoPositionInput');
+        todoList.deleteTodo(deleteTodoPositionInput.valueAsNumber);
+        deleteTodoPositionInput.value = '';
+    },
+    toggleCompleted: function () {
+        var toggleCompletedPositionInput = document.getElementById('toggleCompletedPositionInput');
+        todoList.toggleCompleted(toggleCompletedPositionInput.valueAsNumber);
+        toggleCompletedPositionInput.value = '';
+    }
+};
