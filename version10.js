@@ -1,4 +1,8 @@
-
+// There should be a way to create delete buttons
+// There should be a delete button for each todo
+// Each li should have an id that has the todo position
+// Delete buttons should have access to the todo id
+// Clicking delete should update todoList.todos and the DOM
 
 
 var todoList = {
@@ -59,10 +63,8 @@ var handlers = {
         changeTodoTextInput.value = '';
         view.displayTodos();
     },
-    deleteTodo: function () {
-        var deleteTodoPositionInput = document.getElementById('deleteTodoPositionInput');
-        todoList.deleteTodo(deleteTodoPositionInput.valueAsNumber);
-        deleteTodoPositionInput.value = '';
+    deleteTodo: function (position) {
+        todoList.deleteTodo(position);
         view.displayTodos();
     },
     toggleCompleted: function () {
@@ -92,8 +94,47 @@ var view = {
                 todoTextWithCompletion = '( ) ' + todo.todoText;
             }
 
+            todoLi.id = i;
             todoLi.textContent = todoTextWithCompletion;
+            todoLi.appendChild(this.createDeleteButton());
             todosUl.appendChild(todoLi);
         }
+    },
+    createDeleteButton: function () {
+        var deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.className = 'deleteButton';
+        return deleteButton;
+    },
+    // Event delegation:
+    setUpeventListeners: function () {
+        var todosUl = document.querySelector('ul');
+        todosUl.addEventListener('click', function (event) {
+
+            // Get the element that was clicked on.
+            var elementClicked = event.target;
+
+            // Check if elementClicked is a delete button.
+            if (elementClicked.className === 'deleteButton') {
+                handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
+
+            }
+        });
     }
 };
+
+view.setUpeventListeners();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
