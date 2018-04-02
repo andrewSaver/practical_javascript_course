@@ -44,15 +44,15 @@ color = 'red'; // changes the color variable property value, but not the myHouse
 
 console.log(myHouse.color);
 
-var myHouse1 = { color: 'blue' };
-var myHouse2 = myHouse1; // this tells the computer that variable myHouse2 is the same as the myHouse1 object.
-myHouse2.color = 'red'; // since they are the same, changing the myHouse2.color property also changes myHouse1.
+// var myHouse1 = { color: 'blue' };
+// var myHouse2 = myHouse1; // this tells the computer that variable myHouse2 is the same as the myHouse1 object.
+// myHouse2.color = 'red'; // since they are the same, changing the myHouse2.color property also changes myHouse1.
 
-console.log(myHouse1.color); // red
-console.log(myHouse2.color); // red
+// console.log(myHouse1.color); // red
+// console.log(myHouse2.color); // red
 
-var myHouse1 = { color: 'blue' };
-var myHouse2 = { color: 'blue' };
+const myHouse1 = { color: 'blue' };
+const myHouse2 = { color: 'blue' };
 myHouse2.color = 'red';
 
 console.log(myHouse1.color); // blue
