@@ -1,11 +1,11 @@
 // .toggleAll: if everything's true, make everything false.
 // toggleAll: Otherwise, make everything true.
 
-var todoList = {
+const todoList = {
     todos: [],
     displayTodos: function () {
         if (this.todos.length === 0) {
-            console.log('Your todo list is empty');
+            console.log('Your todo list is empty.');
         } else {
             console.log('My Todos: ');
             for (var i = 0; i < this.todos.length; i++) {
@@ -17,49 +17,24 @@ var todoList = {
             }
         }
     },
-
     addTodo: function (todoText) {
         this.todos.push({
-            todoText: todoText,
+            todoText: todoText, // object's property: variable parameter
             completed: false
         });
         this.displayTodos();
     },
     changeTodo: function (position, todoText) {
-        this.todos[position].todoText = todoText;
+        this.todos[position].todoText = todoText; // now using dot notation to access the property of the object
+        this.displayTodos();
+    },
+    toggleCompleted: function (position) {
+        let todo = this.todos[position];
+        todo.completed = !todo.completed;
         this.displayTodos();
     },
     deleteTodo: function (position) {
         this.todos.splice(position, 1);
-        this.displayTodos();
-    },
-    toggleCompleted: function (position) {
-        var todo = this.todos[position];
-        todo.completed = !todo.completed;
-        this.displayTodos();
-    },
-    toggleAll: function () {
-        var totalTodos = this.todos.length;
-        var completedTodos = 0;
-
-        // Get number of completed todos.
-        for (var i = 0; i < totalTodos; i++) {
-            if (this.todos[i].completed === true) {
-                completedTodos++;
-            }
-        }
-
-        // Case 1: if everything's true, make everything true.
-        if (completedTodos === totalTodos) {
-            for (var i = 0; i < totalTodos; i++) {
-                this.todos[i].completed = false;
-            }
-            // Case 2: otherwise, make everything true.
-        } else {
-            for (var i = 0; i < totalTodos; i++){
-                this.todos[i].completed = true;
-            }
-        }
         this.displayTodos();
     }
 };
