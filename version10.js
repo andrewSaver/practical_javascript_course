@@ -5,59 +5,54 @@
 // Clicking delete should update todoList.todos and the DOM
 
 
-var todoList = {
+const todoList = {
     todos: [],
     addTodo: function (todoText) {
         this.todos.push({
-            todoText: todoText,
+            todoText: todoText, // object's property: variable parameter
             completed: false
         });
     },
     changeTodo: function (position, todoText) {
-        this.todos[position].todoText = todoText;
+        this.todos[position].todoText = todoText; // now using dot notation to access the property of the object
+    },
+    toggleCompleted: function (position) {
+        const todo = this.todos[position];
+        todo.completed = !todo.completed;
     },
     deleteTodo: function (position) {
         this.todos.splice(position, 1);
     },
-    toggleCompleted: function (position) {
-        var todo = this.todos[position];
-        todo.completed = !todo.completed;
-    },
     toggleAll: function () {
-        var totalTodos = this.todos.length;
-        var completedTodos = 0;
-
-        // Get number of completed todos.
-        for (var i = 0; i < totalTodos; i++) {
-            if (this.todos[i].completed === true) {
+        const totalTodos = this.todos.length;
+        let completedTodos = 0; // use let here because the value will change
+        this.todos.forEach(function (todo) {
+            if (todo.completed === true) {
                 completedTodos++;
             }
-        }
+        });
 
-        // Case 1: if everything's true, make everything false.
-        if (completedTodos === totalTodos) {
-            for (var i = 0; i < totalTodos; i++) {
-                this.todos[i].completed = false;
+        this.todos.forEach(function (todo) {
+            // If everthing's true, make everything false.
+            if (completedTodos === totalTodos) {
+                todo.completed = false;
+            } else { // Otherwise...
+                todo.completed = true;
             }
-            // Case 2: otherwise, make everything true.
-        } else {
-            for (var i = 0; i < totalTodos; i++) {
-                this.todos[i].completed = true;
-            }
-        }
+         });
     }
 };
 
-var handlers = {
+const handlers = {
     addTodo: function () {
-        var addTodoTextInput = document.getElementById('addTodoTextInput');
+        const addTodoTextInput = document.getElementById('addTodoTextInput');
         todoList.addTodo(addTodoTextInput.value);
         addTodoTextInput.value = '';
         view.displayTodos();
     },
     changeTodo: function () {
-        var changeTodoPositionInput = document.getElementById('changeTodoPositionInput');
-        var changeTodoTextInput = document.getElementById('changeTodoTextInput');
+        const changeTodoPositionInput = document.getElementById('changeTodoPositionInput');
+        const changeTodoTextInput = document.getElementById('changeTodoTextInput');
         todoList.changeTodo(changeTodoPositionInput.valueAsNumber, changeTodoTextInput.value);
         changeTodoPositionInput.value = '';
         changeTodoTextInput.value = '';
@@ -68,7 +63,7 @@ var handlers = {
         view.displayTodos();
     },
     toggleCompleted: function () {
-        var toggleCompletedPositionInput = document.getElementById('toggleCompletedPositionInput');
+        const toggleCompletedPositionInput = document.getElementById('toggleCompletedPositionInput');
         todoList.toggleCompleted(toggleCompletedPositionInput.valueAsNumber);
         toggleCompletedPositionInput.value = '';
         view.displayTodos();
@@ -79,14 +74,14 @@ var handlers = {
     }
 };
 
-var view = {
+const view = {
     displayTodos: function () {
-        var todosUl = document.querySelector('ul');
+        const todosUl = document.querySelector('ul');
         todosUl.innerHTML = '';
-        for (var i = 0; i < todoList.todos.length; i++) {
-            var todoLi = document.createElement('li');
-            var todo = todoList.todos[i];
-            var todoTextWithCompletion = '';
+        todoList.todos.forEach(function (todo, position) {
+            const todoLi = document.createElement('li');
+
+            let todoTextWithCompletion = '';
 
             if (todo.completed === true) {
                 todoTextWithCompletion = '(x) ' + todo.todoText;
@@ -94,36 +89,37 @@ var view = {
                 todoTextWithCompletion = '( ) ' + todo.todoText;
             }
 
-            todoLi.id = i;
+            todoLi.id = position;
             todoLi.textContent = todoTextWithCompletion;
-            todoLi.appendChild(this.createDeleteButton());
+            todoLi.appendChild(this.createDeleteButton()); // Can only use 'this' here if we reference the parent object in line 114 // Optional this argument for forEach functions
             todosUl.appendChild(todoLi);
-        }
+         }, this); // 'this' in a callback function to reference the view object.
+
     },
     createDeleteButton: function () {
-        var deleteButton = document.createElement('button');
+        const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.className = 'deleteButton';
         return deleteButton;
     },
-    // Event delegation:
-    setUpeventListeners: function () {
-        var todosUl = document.querySelector('ul');
-        todosUl.addEventListener('click', function (event) {
-
-            // Get the element that was clicked on.
-            var elementClicked = event.target;
-
-            // Check if elementClicked is a delete button.
+    setUpEventListeners: function () {
+        const todosUl = document.querySelector('ul');
+        todosUl.addEventListener('click', function (e) {
+            // Get element that was clicked on
+            const elementClicked = e.target;
+            // Check if element clicked is a delete button
             if (elementClicked.className === 'deleteButton') {
                 handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
-
             }
         });
     }
 };
 
-view.setUpeventListeners();
+view.setUpEventListeners();
+
+
+
+
 
 
 
